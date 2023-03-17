@@ -1,0 +1,600 @@
+{
+	"info": {
+		"_postman_id": "3f4181f8-e142-4700-891d-fd453a062697",
+		"name": "JIRA test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24848950"
+	},
+	"item": [
+		{
+			"name": "Create filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"pm.environment.set(\"filterName\", \"newFilter\" + pm.variables.replaceIn('{{$timestamp}}'));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check description\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs by Postman\");",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.contain(\"newFilter\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{filterName}}\",\n    \"description\": \"Lists all open bugs by Postman\",\n    \"jql\": \"created >= -30d AND project = PT AND issuetype = Bug\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create filter with the same name",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Check error message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errors[\"filterName\"]).to.eql(\"Filter with same name already exists.\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"All Open Bugs\",\n    \"description\": \"Lists all open bugs by Postman\",\n    \"jql\": \"created >= -30d AND project = PT AND issuetype = Bug\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check filter neme\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.eql(\"All Open Bugs Postman\");",
+							"});",
+							"",
+							"pm.test(\"Check filter description\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs by Postman\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter/10005",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter",
+						"10005"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get filter which not exist",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Check error Message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorMessages[0]).to.eql(\"The selected filter is not available to you, perhaps it has been deleted or had its permissions changed.\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter/1",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"pm.environment.set(\"filterNameAfterUpdate\", \"updatesFilter\" + pm.variables.replaceIn('{{$timestamp}}'));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check description\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs by Postman\");",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.contain(\"updatesFilter\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{filterNameAfterUpdate}}\",\n    \"description\": \"Lists all open bugs by Postman\",\n    \"jql\": \"created >= -30d AND project = PT AND issuetype = Bug\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter/10006",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter",
+						"10006"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete filter which does not exist",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"",
+							"pm.test(\"Check error Message\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.errorMessages[0]).to.eql(\"Filter does not currently exist.\");",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter/1",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create filter to delete",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"",
+							"pm.environment.set(\"filterNameToDelete\", \"FilterToDelete\" + pm.variables.replaceIn('{{$timestamp}}'));"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Check description\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.description).to.eql(\"Lists all open bugs by Postman\");",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.name).to.contain(\"FilterToDelete\");",
+							"});",
+							"",
+							"pm.globals.set(\"idToDelete\",pm.response.json().id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{filterNameToDelete}}\",\n    \"description\": \"Lists all open bugs by Postman\",\n    \"jql\": \"created >= -30d AND project = PT AND issuetype = Bug\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete filter",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "ATATT3xFfGF08nZjgUTPzxl1_gN0znVi1ztcOgjzZpAryn6jsYZGqTkqLUx6ODJke5_i0BnWRwAmMZby7H09ZDsWPxiOpUsI3LZIapsg5su7UEWQ_KxZntBNDV0pwUtCOY-1J95gV3dr2V0oLyu5eDDXeBW8JSheyJjHvdhOZu-pyDmw7a2f7ys=65192AC3",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "ktosiaszkolenie@gmail.com",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://ktosiaszkolenie.atlassian.net/rest/api/2/filter/{{idToDelete}}",
+					"protocol": "https",
+					"host": [
+						"ktosiaszkolenie",
+						"atlassian",
+						"net"
+					],
+					"path": [
+						"rest",
+						"api",
+						"2",
+						"filter",
+						"{{idToDelete}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
