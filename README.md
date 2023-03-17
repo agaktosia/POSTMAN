@@ -18,3 +18,12 @@ Testy przy użyciu Postmana, po wprowadzonych zmianach zgodnie z dokumentacją.
 https://petstore.swagger.io/v2/pet 
 
 Token został ręcznie usunięty.
+
+## JIRA test
+
+Tworzenie, aktualizacja i usuwanie filtrów w JIRA z poziomu Postman.
+
+Dokumentacja API: https://docs.atlassian.com/software/jira/docs/api/REST/9.6.0/#api/2/filter-deleteFilter
+
+Token został ręcznie usunięty.
+
